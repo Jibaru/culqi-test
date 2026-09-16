@@ -14,6 +14,8 @@ export async function GET() {
       currencyCode: c.currency_code,
       email: c.email,
       referenceCode: c.reference_code,
+      capture: c.capture,
+      captureDate: c.capture_date,
       outcomeType: c.outcome?.type,
       cardBrand: c.source?.iin?.card_brand,
       lastFour: c.source?.last_four,

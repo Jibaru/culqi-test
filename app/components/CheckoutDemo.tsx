@@ -15,7 +15,16 @@ const EMAIL = "prueba@example.com";
 const CONTAINER_ID = "culqi-container";
 const PRICE = `S/ ${(AMOUNT / 100).toFixed(2)}`;
 
-export default function CheckoutDemo({ mode }: { mode: "modal" | "embedded" }) {
+export default function CheckoutDemo({
+  mode,
+  variant = "charge",
+  onSuccess,
+}: {
+  mode: "modal" | "embedded";
+  /** "charge" cobra de inmediato; "preauth" solo retiene (capture: false). */
+  variant?: "charge" | "preauth";
+  onSuccess?: () => void;
+}) {
   const [scriptReady, setScriptReady] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
@@ -53,7 +62,9 @@ export default function CheckoutDemo({ mode }: { mode: "modal" | "embedded" }) {
       onToken: async (token) => {
         setStatus({ kind: "processing" });
         try {
-          const res = await fetch("/api/charge", {
+          const res = await fetch(
+            variant === "preauth" ? "/api/preauth" : "/api/charge",
+            {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -70,6 +81,7 @@ export default function CheckoutDemo({ mode }: { mode: "modal" | "embedded" }) {
               chargeId: data.id,
               reference: data.reference_code,
             });
+            onSuccess?.();
           }
         } catch {
           setStatus({ kind: "error", message: "No se pudo contactar al backend" });
@@ -130,8 +142,10 @@ export default function CheckoutDemo({ mode }: { mode: "modal" | "embedded" }) {
             {!scriptReady
               ? "Cargando Culqi..."
               : status.kind === "processing"
-                ? "Procesando cargo..."
-                : `Pagar ${PRICE}`}
+                ? "Procesando..."
+                : variant === "preauth"
+                  ? `Retener ${PRICE}`
+                  : `Pagar ${PRICE}`}
           </button>
         ) : (
           <div id={CONTAINER_ID} className={styles.embedContainer}>
@@ -144,7 +158,8 @@ export default function CheckoutDemo({ mode }: { mode: "modal" | "embedded" }) {
         )}
         {status.kind === "success" && (
           <p className={styles.success}>
-            ✅ Cargo creado: <code>{status.chargeId}</code>
+            ✅ {variant === "preauth" ? "Retención creada" : "Cargo creado"}:{" "}
+            <code>{status.chargeId}</code>
             <br />
             Referencia: {status.reference}
           </p>

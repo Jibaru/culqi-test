@@ -18,6 +18,9 @@ export interface Charge {
   email: string;
   description?: string;
   reference_code?: string;
+  /** false = preautorización (retenido, aún no cobrado). */
+  capture?: boolean;
+  capture_date?: number | null;
   outcome?: CulqiOutcome;
   source?: {
     object: string;

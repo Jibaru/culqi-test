@@ -72,6 +72,34 @@ source .env.local && curl -s "http://localhost:3000/api/webhooks/culqi?token=$CU
   -d '{"object":"event","type":"charge.creation.succeeded","data":{"id":"chr_test_xxxxxxxx"}}'
 ```
 
+## Preautorización: retener ahora, cobrar al aceptar
+
+Caso de uso: la familia reserva, la acompañante recibe la propuesta por WhatsApp (Kapso), y **el cobro solo ocurre cuando ella acepta**. Culqi lo soporta con preautorización + captura; la demo **/preauth** ejercita el ciclo completo.
+
+### El flujo
+
+1. Checkout normal en el navegador → token.
+2. `POST /v2/charges` con **`capture: false`** → Culqi **retiene** el monto sin cobrarlo. La respuesta es síncrona: sabes al instante si la retención fue autorizada (`outcome: venta_exitosa`, `capture: false`, `capture_date: null`).
+3. Kapso envía el WhatsApp a la acompañante; su respuesta llega por webhook al backend.
+4. **Acepta** → `POST /v2/charges/{id}/capture` → se cobra de verdad (`capture: true`, `capture_date` seteado).
+5. **Rechaza / timeout** → `POST /v2/refunds` por el monto completo → la retención se libera (`amount_refunded == amount`).
+
+En el SDK: `createCharge({ ..., capture: false })` y `captureCharge(id)`; la liberación es `createRefund` normal.
+
+### Verificado empíricamente (entorno de prueba, sep 2026)
+
+- Cargo con `capture: false` → autorizado al instante, sin cobro (`capture_date: null`). ✓
+- `POST /charges/{id}/capture` → cobra la retención. ✓
+- `POST /refunds` sobre un cargo **no capturado** → aceptado, libera la retención. ✓
+
+### Advertencias
+
+- **Solo tarjetas.** La preautorización es de las redes de tarjetas; **Yape no la soporta** (débito inmediato). Adoptar este flujo implica sacar Yape del checkout o darle un camino distinto.
+- **Ventana de captura**: las retenciones expiran (en la industria, ~7 días). **Confirmar con Culqi el plazo exacto** y el comportamiento de la liberación **en producción** (aquí se probó en el entorno de test; en producción la liberación pasa por el banco emisor y puede tardar en reflejarse).
+- **UX**: la familia ve el monto retenido en su tarjeta desde el paso 2 — comunicarlo ("retendremos S/ X hasta confirmar a tu acompañante").
+- **Alternativa compatible con Yape**: cobrar de inmediato y devolver si rechaza (más simple, pero la devolución tarda días en reflejarse en el banco del cliente).
+- Requiere un estado de reserva tipo `awaiting_companion` con timeout y reasignación — es sobre todo una decisión de producto, no de API.
+
 ## Requisitos para URL
 
 Las URLs deben cumplir estos requisitos para que pasen sin observaciones.

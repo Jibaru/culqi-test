@@ -35,6 +35,18 @@ export default function Home() {
           <span className={styles.demoCta}>Probar demo →</span>
         </Link>
 
+        <Link href="/preauth" className={styles.demoCard}>
+          <span className={styles.demoIcon} aria-hidden>
+            🤝
+          </span>
+          <h2>Retener y cobrar al aceptar</h2>
+          <p>
+            Preautorización con <code>capture: false</code>: retiene el monto
+            al reservar y cobra (o libera) cuando la otra parte acepta.
+          </p>
+          <span className={styles.demoCta}>Probar demo →</span>
+        </Link>
+
         <Link href="/admin" className={styles.demoCard}>
           <span className={styles.demoIcon} aria-hidden>
             🧾
