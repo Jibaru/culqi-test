@@ -1,0 +1,14 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_CULQI_PUBLIC_KEY: ${NEXT_PUBLIC_CULQI_PUBLIC_KEY}
+    environment:
+      HOSTNAME: "0.0.0.0"
+      PORT: "3000"
+      CULQI_SECRET_KEY: ${CULQI_SECRET_KEY}
+      CULQI_WEBHOOK_TOKEN: ${CULQI_WEBHOOK_TOKEN}
+    expose:
+      - "3000"
+    restart: unless-stopped
