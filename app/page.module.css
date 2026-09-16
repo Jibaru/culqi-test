@@ -1,150 +1,420 @@
+/* ── Layout general ─────────────────────────────────────────────── */
+
 .page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
   flex: 1;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  padding: 3rem 1rem;
+  gap: 1.5rem;
 }
 
-.main {
+.back {
+  align-self: flex-start;
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+
+.back:hover {
+  color: var(--accent);
+}
+
+.header {
+  text-align: center;
   display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  gap: 0.5rem;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+.header h1 {
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
+.header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.badge {
+  align-self: center;
+  font-size: 0.75rem;
   font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+/* ── Home: selector de demos ────────────────────────────────────── */
+
+.demoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 700px;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
+.demoCard {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    border-color 0.15s;
+}
+
+.demoCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 24px -12px rgb(15 118 110 / 0.35);
+}
+
+.demoIcon {
+  font-size: 1.8rem;
+}
+
+.demoCard h2 {
+  font-size: 1.05rem;
+}
+
+.demoCard p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.demoCta {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ── Checkout: tarjeta principal ────────────────────────────────── */
+
+.card {
   width: 100%;
   max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -24px rgb(15 23 42 / 0.25);
+  overflow: hidden;
 }
 
-.ctas a {
+.cardWide {
+  max-width: 560px;
+}
+
+.cardBody {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+/* Resumen del pedido */
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.orderRow {
+  display: flex;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
+  gap: 0.9rem;
+}
+
+.orderThumb {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  font-size: 1.4rem;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.orderInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.orderInfo strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.orderInfo span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.orderPrice {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.totalRow strong {
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Botón de pago (demo modal) ─────────────────────────────────── */
+
+.payButton {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
   cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  transition:
+    background 0.15s,
+    transform 0.1s;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+.payButton:hover:not(:disabled) {
+  background: var(--accent-hover);
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.payButton:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+.payButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
+/* ── Formulario incrustado ──────────────────────────────────────── */
 
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
+.embedContainer {
+  position: relative;
+  height: 680px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fbfdfd;
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+/* Culqi inyecta un iframe sin dimensiones; sin esto queda en los 150px
+   por defecto de un iframe y el formulario se ve cortado. */
+.embedContainer :global(iframe) {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
 }
 
-.code {
-  font-family: var(--font-geist-mono);
-  font-size: 0.9em;
-  background: color-mix(in srgb, currentColor 8%, transparent);
-  padding: 0.1em 0.4em;
-  border-radius: 6px;
+.embedContainer > p {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+/* ── Panel de cargos (demo 3) ───────────────────────────────────── */
+
+.cardTable {
+  max-width: 900px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.chargesTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.chargesTable th {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.chargesTable td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.chargesTable tr:last-child td {
+  border-bottom: none;
+}
+
+.tableMuted {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.tableAmount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sectionTitle h2 {
+  font-size: 1.05rem;
+}
+
+.okBadge {
+  display: inline-block;
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.refundedBadge {
+  display: inline-block;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.refundButton {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.refundButton:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.refundForm {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.refundForm input,
+.refundForm select {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.refundForm input {
+  width: 5.5rem;
+}
+
+.refundForm button {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+.refundForm button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Estados ────────────────────────────────────────────────────── */
+
+.notice {
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border: 1px solid;
+}
+
+.processing {
+  composes: notice;
+  color: #92400e;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.success {
+  composes: notice;
+  color: #166534;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  composes: notice;
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.testCardHint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.82rem;
 }

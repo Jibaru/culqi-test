@@ -1,69 +1,52 @@
-import Image from "next/image";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
+    <main className={styles.page}>
+      <div className={styles.header}>
+        <span className={styles.badge}>Culqi + Next.js</span>
+        <h1>Demos de pago con Culqi</h1>
+        <p>Dos formas de mostrar el mismo Checkout Custom.</p>
+      </div>
+
+      <div className={styles.demoGrid}>
+        <Link href="/modal" className={styles.demoCard}>
+          <span className={styles.demoIcon} aria-hidden>
+            🪟
+          </span>
+          <h2>Checkout en modal</h2>
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+            El formulario de pago se abre como ventana emergente al presionar
+            el botón de pagar. Es la integración más rápida.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          <span className={styles.demoCta}>Probar demo →</span>
+        </Link>
+
+        <Link href="/embedded" className={styles.demoCard}>
+          <span className={styles.demoIcon} aria-hidden>
+            📄
+          </span>
+          <h2>Checkout incrustado</h2>
+          <p>
+            El formulario se renderiza dentro de la página, integrado al flujo
+            de compra (<code>modal: false</code> + <code>container</code>).
+          </p>
+          <span className={styles.demoCta}>Probar demo →</span>
+        </Link>
+
+        <Link href="/admin" className={styles.demoCard}>
+          <span className={styles.demoIcon} aria-hidden>
+            🧾
+          </span>
+          <h2>Cargos y devoluciones</h2>
+          <p>
+            Mini panel de administración: lista los últimos cargos y permite
+            devolverlos, total o parcialmente, con el API de refunds.
+          </p>
+          <span className={styles.demoCta}>Probar demo →</span>
+        </Link>
+      </div>
+    </main>
   );
 }
