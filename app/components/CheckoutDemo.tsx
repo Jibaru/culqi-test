@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { loadCheckoutScript, openCheckout } from "@demo/culqi/client";
+import { loadCheckoutScript, openCheckout } from "@jibaru/culqi/checkout";
 import { AMOUNT, CURRENCY } from "@/lib/config";
 import styles from "../page.module.css";
 

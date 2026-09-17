@@ -2,7 +2,6 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-COPY packages/culqi/package.json packages/culqi/
 RUN npm ci
 
 COPY . .

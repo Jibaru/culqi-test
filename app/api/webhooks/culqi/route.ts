@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { parseWebhookEvent, WebhookParseError } from "@demo/culqi";
+import { parseWebhookEvent, WebhookParseError } from "@jibaru/culqi";
 import { getCulqiClient } from "@/lib/culqi-server";
 import { listEvents, recordEvent } from "@/lib/webhook-store";
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   let verified = false;
   if (resourceId?.startsWith("chr_")) {
     verified = await getCulqiClient()
-      .getCharge(resourceId)
+      .charges.get(resourceId)
       .then(() => true)
       .catch(() => false);
   }

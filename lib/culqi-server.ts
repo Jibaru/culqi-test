@@ -1,15 +1,15 @@
-import { CulqiClient } from "@demo/culqi";
+import { Culqi } from "@jibaru/culqi";
 
-let client: CulqiClient | null = null;
+let client: Culqi | null = null;
 
 // Instancia compartida para las rutas de API; falla claro si falta la llave.
-export function getCulqiClient(): CulqiClient {
+export function getCulqiClient(): Culqi {
   if (!client) {
     const secretKey = process.env.CULQI_SECRET_KEY;
     if (!secretKey) {
       throw new Error("Falta CULQI_SECRET_KEY en .env.local");
     }
-    client = new CulqiClient({ secretKey });
+    client = new Culqi({ secretKey });
   }
   return client;
 }

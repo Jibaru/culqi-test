@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CulqiError, type RefundReason } from "@demo/culqi";
+import { CulqiError, type RefundReason } from "@jibaru/culqi";
 import { getCulqiClient } from "@/lib/culqi-server";
 
 const REASONS: RefundReason[] = [
@@ -26,8 +26,8 @@ export async function POST(request: Request) {
   }
 
   try {
-    const refund = await getCulqiClient().createRefund({
-      chargeId,
+    const refund = await getCulqiClient().refunds.create({
+      charge_id: chargeId,
       amount,
       reason,
     });

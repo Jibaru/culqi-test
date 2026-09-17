@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CulqiError } from "@demo/culqi";
+import { CulqiError } from "@jibaru/culqi";
 import { getCulqiClient } from "@/lib/culqi-server";
 import { AMOUNT, CURRENCY } from "@/lib/config";
 
@@ -15,11 +15,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    const charge = await getCulqiClient().createCharge({
+    const charge = await getCulqiClient().charges.create({
       amount: AMOUNT,
-      currencyCode: CURRENCY,
+      currency_code: CURRENCY,
       email,
-      sourceId: tokenId,
+      source_id: tokenId,
       description: "Retención (preautorización) de prueba",
       capture: false,
     });

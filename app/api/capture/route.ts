@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CulqiError } from "@demo/culqi";
+import { CulqiError } from "@jibaru/culqi";
 import { getCulqiClient } from "@/lib/culqi-server";
 
 // Captura (cobra de verdad) una retención creada con capture: false.
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const charge = await getCulqiClient().captureCharge(chargeId);
+    const charge = await getCulqiClient().charges.capture(chargeId);
     return NextResponse.json({
       id: charge.id,
       capture: charge.capture,

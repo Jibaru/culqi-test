@@ -4,15 +4,15 @@ Proyecto mínimo de Next.js (App Router) para probar la integración con [Culqi]
 
 ## Cómo funciona
 
-Toda la integración con Culqi vive en un mini SDK local: **`packages/culqi`** (`@demo/culqi`), enlazado por npm workspaces y transpilado por Next (`transpilePackages`).
+Toda la integración con Culqi usa el SDK publicado [**`@jibaru/culqi`**](https://www.npmjs.com/package/@jibaru/culqi) ([repo](https://github.com/Jibaru/culqi)).
 
-- **`@demo/culqi/client`** (navegador, solo llave pública): `loadCheckoutScript()` inyecta `https://js.culqi.com/checkout-js` una sola vez, y `openCheckout()` abre el Checkout Custom (modal o incrustado) y entrega el **token** por callback. Los datos de la tarjeta van directo del navegador a Culqi — nunca tocan tu servidor.
-- **`@demo/culqi`** (servidor, llave secreta): `CulqiClient` habla con `https://api.culqi.com/v2` — `createCharge`, `getCharge`, `listCharges`, `captureCharge`, `createRefund`, `listRefunds` — y lanza `CulqiError` tipado en fallos.
+- **`@jibaru/culqi/checkout`** (navegador, solo llave pública): `loadCheckoutScript()` inyecta `https://js.culqi.com/checkout-js` una sola vez, y `openCheckout()` abre el Checkout Custom (modal o incrustado) y entrega el **token** por callback. Los datos de la tarjeta van directo del navegador a Culqi — nunca tocan tu servidor.
+- **`@jibaru/culqi`** (servidor, llave secreta): cliente tipado de `https://api.culqi.com/v2` — `charges` (con capture), `refunds`, `customers`, `cards`, `orders`, `plans`, `subscriptions`, `parseWebhookEvent` — con errores tipados (`CulqiError` y subclases).
 
 La app usa el SDK así:
 
 1. **Frontend** (`app/components/CheckoutDemo.tsx`): tokeniza con el checkout y envía el `tokenId` a la ruta de cargo.
-2. **Backend** (`app/api/charge`, `app/api/charges`, `app/api/refund`): crea el cargo, lista los últimos cargos y crea devoluciones con `CulqiClient` (la llave secreta solo vive en el servidor, `lib/culqi-server.ts`). El monto del cargo se define en `lib/config.ts` del lado del servidor, nunca se confía en el monto del cliente.
+2. **Backend** (`app/api/charge`, `app/api/charges`, `app/api/refund`, `app/api/preauth`, `app/api/capture`): crea cargos y retenciones, lista los últimos cargos y crea devoluciones con el cliente `Culqi` (la llave secreta solo vive en el servidor, `lib/culqi-server.ts`). El monto del cargo se define en `lib/config.ts` del lado del servidor, nunca se confía en el monto del cliente.
 
 ## Setup
 
